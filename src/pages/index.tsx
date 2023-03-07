@@ -1,59 +1,67 @@
+import { ReactNode } from "react";
 import {
-  Stack,
+  Box,
   Flex,
+  Link,
+  IconButton,
   Button,
-  Text,
-  VStack,
-  useBreakpointValue,
+  useDisclosure,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
-export default function WithBackgroundImage() {
+const Links = ["Dashboard", "Projects", "Team"];
+
+const NavLink = ({ children }: { children: ReactNode }) => (
+  <Link
+    px={2}
+    py={1}
+    rounded={"md"}
+    _hover={{
+      textDecoration: "none",
+      bg: useColorModeValue("gray.200", "gray.700"),
+    }}
+    href={"#"}
+  >
+    {children}
+  </Link>
+);
+
+export default function withAction() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Flex
-      w={"full"}
-      h={"100vh"}
-      backgroundImage={
-        "url(https://images.unsplash.com/photo-1600267175161-cfaa711b4a81?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)"
-      }
-      backgroundSize={"cover"}
-      backgroundPosition={"center center"}
-    >
-      <VStack
-        w={"full"}
-        justify={"center"}
-        px={useBreakpointValue({ base: 4, md: 8 })}
-        bgGradient={"linear(to-r, blackAlpha.600, transparent)"}
+    <>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"flex-end"}>
+          <IconButton
+            size={"md"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
+            onClick={isOpen ? onClose : onOpen}
+          />
+
+          <Flex alignItems={"center"}>
+            <Button variant={"solid"} colorScheme={"teal"} size={"lg"} mr={4}>
+              Login
+            </Button>
+            <Button variant={"solid"} colorScheme={"teal"} size={"lg"} mr={4}>
+              Criar
+            </Button>
+          </Flex>
+        </Flex>
+      </Box>
+
+      <Flex
+        w={"100%"}
+        h={"100%"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        p={4}
       >
-        <Stack maxW={"2xl"} align={"flex-start"} spacing={6}>
-          <Text
-            color={"white"}
-            fontWeight={700}
-            lineHeight={1.2}
-            fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
-          >
-            Lorem ipsum dolor sit amet consectetur adipiscing elit sed do
-            eiusmod tempor
-          </Text>
-          <Stack direction={"row"}>
-            <Button
-              bg={"blue.400"}
-              rounded={"full"}
-              color={"white"}
-              _hover={{ bg: "blue.500" }}
-            >
-              Show me more
-            </Button>
-            <Button
-              bg={"whiteAlpha.300"}
-              rounded={"full"}
-              color={"white"}
-              _hover={{ bg: "whiteAlpha.500" }}
-            >
-              Show me more
-            </Button>
-          </Stack>
-        </Stack>
-      </VStack>
-    </Flex>
+        Main Content Here
+      </Flex>
+    </>
   );
 }
