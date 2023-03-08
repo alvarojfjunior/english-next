@@ -13,7 +13,13 @@ import {
 
 export default function SocialProfileWithImage() {
   return (
-    <Flex alignItems="center" justifyContent="center" gap="7" wrap="wrap">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      gap="7"
+      wrap="wrap"
+      height="100vh"
+    >
       {Array.from({ length: 4 }).map((_, index) => (
         <Center py={6}>
           <Box
