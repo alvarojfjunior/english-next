@@ -1,21 +1,26 @@
-import NavBar from "@/components/navbar";
 import {
   Heading,
-  Avatar,
   Box,
   Center,
+  IconButton,
   Image,
   Flex,
   Text,
   Stack,
   Button,
+  useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Link from "next/link";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import NavBar from "@/components/navbar";
 
-export default function SocialProfileWithImage() {
+export default function Panel() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <>
-    <NavBar />
+    <Box>
+      <NavBar />
       <Flex
         alignItems="center"
         justifyContent="center"
@@ -24,7 +29,7 @@ export default function SocialProfileWithImage() {
         height="100vh"
       >
         {Array.from({ length: 4 }).map((_, index) => (
-          <Center width={"100%"} height={"100%"} py={6}>
+          <Center key={index} width={"100%"} height={"100%"} py={6}>
             <Box
               maxW={"270px"}
               w={"full"}
@@ -81,6 +86,6 @@ export default function SocialProfileWithImage() {
           </Center>
         ))}
       </Flex>
-    </>
+    </Box>
   );
 }
