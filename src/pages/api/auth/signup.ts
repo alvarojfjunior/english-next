@@ -1,12 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../services/database";
 import bcrypt from "bcrypt";
+import { createDossie } from "@/utils/createDossie";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
+    console.log(req)
     if (req.method === "POST") {
       const body = JSON.parse(JSON.stringify(req.body));
 
@@ -19,6 +21,13 @@ export default async function handler(
       await user.save();
 
       delete user.password;
+
+      await createDossie({
+        //@ts-ignore
+        userId: user._id,
+        action: 'signup',
+        identfier: 'user'
+      });
 
       return res.status(201).json(user);
     }

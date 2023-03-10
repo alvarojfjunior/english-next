@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Dossie, Room } from "../../../services/database";
+import { Payment } from "../../../services/database";
 import { authenticate } from "@/utils/apiAuth";
-import { IAuth } from "@/utils/types";
-import { JwtPayload } from "jsonwebtoken";
 import { createDossie } from "@/utils/createDossie";
 
 export default async function handler(
@@ -15,7 +13,7 @@ export default async function handler(
       if (!auth) return res.status(401).json({ message: "Unauthorized" });
 
       const query = JSON.parse(JSON.stringify(req.query));
-      const orders = await Room.find(query);
+      const orders = await Payment.find(query);
       return res.status(200).json(orders);
     }
 
@@ -25,22 +23,21 @@ export default async function handler(
 
       const body = JSON.parse(JSON.stringify(req.body));
 
-
-      const room = new Room(body);
+      const room = new Payment(body);
 
       await room.save();
 
-      createDossie({
+      await createDossie({
         userId: auth._id,
         action: 'new',
-        identfier: 'room'
+        identfier: 'payment'
       });
 
       return res.status(201).json(room);
     }
 
     if (req.method === "PUT") {
-      const auth = authenticate(req);
+      const auth: any = authenticate(req);
       if (!auth) return res.status(401).json({ message: "Unauthorized" });
 
       const body = JSON.parse(JSON.stringify(req.body));
@@ -48,16 +45,16 @@ export default async function handler(
       const _id = body._id;
       delete body._id;
 
-      const { modifiedCount } = await Room.updateOne({ _id }, body).lean();
+      const { modifiedCount } = await Payment.updateOne({ _id }, body).lean();
 
       await createDossie({
         userId: auth._id,
         action: 'update',
-        identfier: 'room'
+        identfier: 'payment'
       });
 
       if (modifiedCount > 0) {
-        const order = await Room.findOne({ _id }).lean();
+        const order = await Payment.findOne({ _id }).lean();
         return res.status(200).json(order);
       }
     }
