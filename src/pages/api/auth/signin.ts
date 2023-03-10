@@ -36,7 +36,9 @@ export default async function handler(
 
         delete user.password;
 
+        //inserir docie
         return res.status(200).json(user);
+
       }
       return res.status(400).send("Invalid Credentials");
     }

@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Dossie, Room } from "../../../services/database";
+import { Payment } from "../../../services/database";
 import { authenticate } from "@/utils/apiAuth";
-import { IAuth } from "@/utils/types";
-import { JwtPayload } from "jsonwebtoken";
 import { createDossie } from "@/utils/createDossie";
 
 export default async function handler(
@@ -15,7 +13,7 @@ export default async function handler(
       if (!auth) return res.status(401).json({ message: "Unauthorized" });
 
       const query = JSON.parse(JSON.stringify(req.query));
-      const orders = await Room.find(query);
+      const orders = await Payment.find(query);
       return res.status(200).json(orders);
     }
 
@@ -25,16 +23,15 @@ export default async function handler(
 
       const body = JSON.parse(JSON.stringify(req.body));
 
+      const room = new Payment(body);
       const bodyDossie = {
         userId: auth._id,
         action: 1,
-        identfier: 1,
+        identfier: 2,
       };
-
-      const room = new Room(body);
+      createDossie(bodyDossie);
 
       await room.save();
-      createDossie(bodyDossie);
 
       return res.status(201).json(room);
     }
@@ -51,14 +48,14 @@ export default async function handler(
       const bodyDossie = {
         userId: auth._id,
         action: 2,
-        identfier: 1,
+        identfier: 2,
       };
       createDossie(bodyDossie);
 
-      const { modifiedCount } = await Room.updateOne({ _id }, body).lean();
+      const { modifiedCount } = await Payment.updateOne({ _id }, body).lean();
 
       if (modifiedCount > 0) {
-        const order = await Room.findOne({ _id }).lean();
+        const order = await Payment.findOne({ _id }).lean();
         return res.status(200).json(order);
       }
     }

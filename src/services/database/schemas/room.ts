@@ -20,6 +20,14 @@ try {
         required: true,
         default: 1,
       },
+      ownerId: {
+        type: String,
+        required: true,
+      },
+      closedAt: {
+        type: Date,
+        required: false,
+      },
     },
     { collection: "rooms", timestamps: true }
   );
