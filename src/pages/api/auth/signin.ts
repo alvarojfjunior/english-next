@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../services/database";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { createDossie } from "@/utils/createDossie";
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,7 +37,13 @@ export default async function handler(
 
         delete user.password;
 
-        //inserir docie
+        await createDossie({
+          //@ts-ignore
+          userId: user._id,
+          action: 'signin',
+          identfier: 'user'
+        });
+
         return res.status(200).json(user);
 
       }

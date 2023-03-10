@@ -25,22 +25,22 @@ export default async function handler(
 
       const body = JSON.parse(JSON.stringify(req.body));
 
-      const bodyDossie = {
-        userId: auth._id,
-        action: 1,
-        identfier: 1,
-      };
 
       const room = new Room(body);
 
       await room.save();
-      createDossie(bodyDossie);
+
+      createDossie({
+        userId: auth._id,
+        action: 'new',
+        identfier: 'room'
+      });
 
       return res.status(201).json(room);
     }
 
     if (req.method === "PUT") {
-      const auth: any = authenticate(req);
+      const auth = authenticate(req);
       if (!auth) return res.status(401).json({ message: "Unauthorized" });
 
       const body = JSON.parse(JSON.stringify(req.body));
@@ -48,14 +48,13 @@ export default async function handler(
       const _id = body._id;
       delete body._id;
 
-      const bodyDossie = {
-        userId: auth._id,
-        action: 2,
-        identfier: 1,
-      };
-      createDossie(bodyDossie);
-
       const { modifiedCount } = await Room.updateOne({ _id }, body).lean();
+
+      await createDossie({
+        userId: auth._id,
+        action: 'update',
+        identfier: 'room'
+      });
 
       if (modifiedCount > 0) {
         const order = await Room.findOne({ _id }).lean();

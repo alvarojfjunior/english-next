@@ -4,6 +4,7 @@ export let DossieSchema: Mongoose.Schema;
 try {
   DossieSchema = Mongoose.model("Dossie").schema;
 } catch (error) {
+  console.log('Create a new schema')
   DossieSchema = new Mongoose.Schema(
     {
       userId: {

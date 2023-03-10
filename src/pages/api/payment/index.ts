@@ -24,14 +24,14 @@ export default async function handler(
       const body = JSON.parse(JSON.stringify(req.body));
 
       const room = new Payment(body);
-      const bodyDossie = {
-        userId: auth._id,
-        action: 1,
-        identfier: 2,
-      };
-      createDossie(bodyDossie);
 
       await room.save();
+
+      await createDossie({
+        userId: auth._id,
+        action: 'new',
+        identfier: 'payment'
+      });
 
       return res.status(201).json(room);
     }
@@ -45,14 +45,13 @@ export default async function handler(
       const _id = body._id;
       delete body._id;
 
-      const bodyDossie = {
-        userId: auth._id,
-        action: 2,
-        identfier: 2,
-      };
-      createDossie(bodyDossie);
-
       const { modifiedCount } = await Payment.updateOne({ _id }, body).lean();
+
+      await createDossie({
+        userId: auth._id,
+        action: 'update',
+        identfier: 'payment'
+      });
 
       if (modifiedCount > 0) {
         const order = await Payment.findOne({ _id }).lean();

@@ -1,8 +1,16 @@
 import { Dossie } from "@/services/database";
 
-export async function createDossie(params: any) {
-  // Action 1 = Cadastrar, 2 = Alterar, 3 = Excluir
-  // Identifier = 1 room, 2 = payment
-  const dossie = new Dossie(params);
-  await dossie.save();
+interface INewDossie {
+  userId: string; 
+  action: string;
+  identfier: string;
+}
+
+export async function createDossie(param: INewDossie) {
+  try {
+    const dossie = new Dossie(param);
+    await dossie.save(); 
+  } catch (error) {
+    console.log(error)
+  }
 }
