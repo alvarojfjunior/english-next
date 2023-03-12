@@ -21,9 +21,13 @@ import NextLink from "next/link";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
+import { getAxiosInstance } from "@/services/api";
+import { toast } from "react-toastify";
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const api = getAxiosInstance()
   const router = useRouter();
 
   const SignupSchema = Yup.object().shape({
@@ -39,9 +43,9 @@ export default function SignupCard() {
     password: Yup.string()
       .min(8, "Password must contain at least 8 characters!")
       .matches(/[0-9]/, "Password must contain at least a number!")
-      .matches(/[a-z]/, "Password must contain at least a lower case letter!")
+      .matches(/[a-z]/, "Password must contain at least a lowercase letter!")
       .matches(/[A-Z]/, "Password must contain at least a uppercase letter!")
-      .matches(/[^\w]/, "Password must contain at least a spacial character!")
+      .matches(/[^\w]/, "Password must contain at least a special character!")
       .required("Required"),
   });
 
@@ -60,10 +64,24 @@ export default function SignupCard() {
           password: "",
         }}
         validationSchema={SignupSchema}
-        onSubmit={(values) => {
-          alert(JSON.stringify(values, null, 2));
-          router.push('./signin')
+        onSubmit={async (values) => {
+          const data = {
+            name: `${values.firstName} ${values.lastName}`,
+            email: values.email,
+            password: values.password
+          }
 
+          try {
+            await api.post('api/auth/signup', data);
+
+            toast.success('Account created with success');
+            router.push('/signin')
+
+          } catch (error: any) {
+            const errorMessage = error.response.data;
+
+            toast.error(errorMessage);
+          }
         }}
       >
         {({ handleSubmit, errors, touched }) => (

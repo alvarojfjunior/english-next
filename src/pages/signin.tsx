@@ -22,6 +22,8 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { getAxiosInstance } from "@/services/api";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/auth";
 
 interface IUserAuth {
   email: string;
@@ -35,6 +37,8 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
   const api = getAxiosInstance();
+  const { setIsAuth } = useAuth();
+  const router = useRouter();
 
   const SigninSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -65,8 +69,12 @@ export default function SignIn() {
           try {
             const { data } = await api.post("/api/auth/signin", credentials);
             const userAuth: IUserAuth = data;
-            toast.success(`Welcome, ${userAuth.name}`);
+
             localStorage.setItem("accessToken", JSON.stringify(userAuth.token));
+            setIsAuth(true)
+            toast.success(`Welcome, ${userAuth.name}`);
+            router.push("private/panel");
+
           } catch (error: any) {
             const errorMessage = error.response.data;
             toast.error(errorMessage);
@@ -128,7 +136,9 @@ export default function SignIn() {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <Checkbox>Remember me</Checkbox>
+                      <FormControl>
+                        <Checkbox name={"rememberMe"}>Remember me</Checkbox>
+                      </FormControl>
                       <Link as={NextLink} href={"#"}>
                         Forgot password?
                       </Link>

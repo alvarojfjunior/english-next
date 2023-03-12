@@ -1,15 +1,21 @@
 import { Box, Flex, Button, useColorModeValue } from "@chakra-ui/react";
 import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/auth";
 
 export default function NavBar() {
-  const [isSign, setIsSign] = useState(false);
+  const { isAuth, setIsAuth } = useAuth();
   const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsAuth(false);
+  };
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
       <Flex h={16} alignItems={"center"} justifyContent={"flex-end"}>
-        {!isSign ? (
+        {!isAuth ? (
           <Fragment>
             <Flex alignItems={"center"}>
               <Button
@@ -17,7 +23,7 @@ export default function NavBar() {
                 colorScheme={"teal"}
                 size={"lg"}
                 mr={4}
-                onClick={() => router.push("./signin")}
+                onClick={() => router.push("/signin")}
               >
                 Login
               </Button>
@@ -29,7 +35,7 @@ export default function NavBar() {
                 colorScheme={"teal"}
                 size={"lg"}
                 mr={4}
-                onClick={() => router.push("./signup")}
+                onClick={() => router.push("/signup")}
               >
                 Sign up
               </Button>
@@ -37,7 +43,13 @@ export default function NavBar() {
           </Fragment>
         ) : (
           <Flex alignItems={"center"}>
-            <Button variant={"solid"} colorScheme={"teal"} size={"lg"} mr={4}>
+            <Button
+              variant={"solid"}
+              colorScheme={"teal"}
+              size={"lg"}
+              mr={4}
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           </Flex>
