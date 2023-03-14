@@ -1,15 +1,3 @@
-import google from 'googlethis';
-
-const options = {
-    page: 0,
-    safe: false, // Safe Search
-    parse_ads: false, // If set to true sponsored results will be parsed
-    additional_params: {
-        // add additional parameters here, see https://moz.com/blog/the-ultimate-guide-to-the-google-search-parameters and https://www.seoquake.com/blog/google-search-param/
-        hl: 'en'
-    }
-}
-
 export const getImageURLByPhrase = async (phrase: string): Promise<string> => {
     const apiKey = '34397078-7645236e8cfc56fb396627924';
     try {

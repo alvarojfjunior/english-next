@@ -4,8 +4,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import NextNProgress from "nextjs-progressbar";
 import { AuthProvider } from "@/contexts/auth";
 import { AppProvider } from "@/contexts/app";
-import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NextNProgress />
       <AppProvider>
         <AuthProvider>
-          <NavBar />
+          <Navbar />
           <Component {...pageProps} />
           <Footer />
         </AuthProvider>
