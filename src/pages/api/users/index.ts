@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User } from "../../../services/database";
+import { User } from "@/services/database";
 import { authenticate } from "@/utils/apiAuth";
 import { createDossie } from "@/utils/createDossie";
 
