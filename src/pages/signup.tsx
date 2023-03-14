@@ -15,7 +15,7 @@ import {
   useColorModeValue,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import * as Yup from "yup";
@@ -23,8 +23,18 @@ import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import { getAxiosInstance } from "@/services/api";
 import { toast } from "react-toastify";
+import { AppContext } from "@/contexts/app";
+
+
+interface IForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 
 export default function SignupCard() {
+  const appContext = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
 
   const api = getAxiosInstance()
@@ -49,6 +59,27 @@ export default function SignupCard() {
       .required("Required"),
   });
 
+
+  const onSubmit = async (values: IForm) => {
+    try {
+      appContext.onOpenLoading()
+      const data = {
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        password: values.password
+      }
+      await api.post('api/auth/signup', data);
+
+      toast.success('Account created with success');
+      router.push('/signin')
+
+    } catch (error: any) {
+      const errorMessage = error.response.data;
+      toast.error(errorMessage);
+      appContext.onCloseLoading()
+    }
+  }
+
   return (
     <Flex
       minH={"100vh"}
@@ -64,25 +95,7 @@ export default function SignupCard() {
           password: "",
         }}
         validationSchema={SignupSchema}
-        onSubmit={async (values) => {
-          const data = {
-            name: `${values.firstName} ${values.lastName}`,
-            email: values.email,
-            password: values.password
-          }
-
-          try {
-            await api.post('api/auth/signup', data);
-
-            toast.success('Account created with success');
-            router.push('/signin')
-
-          } catch (error: any) {
-            const errorMessage = error.response.data;
-
-            toast.error(errorMessage);
-          }
-        }}
+        onSubmit={onSubmit}
       >
         {({ handleSubmit, errors, touched }) => (
           <Form onSubmit={handleSubmit}>
@@ -91,7 +104,7 @@ export default function SignupCard() {
                 <Heading fontSize={"4xl"} textAlign={"center"}>
                   Sign up
                 </Heading>
-                <Text fontSize={"lg"} color={"gray.600"}>
+                <Text fontSize={"lg"} color={"purple.700"}>
                   to enjoy all of our cool features ✌️
                 </Text>
               </Stack>
@@ -165,11 +178,7 @@ export default function SignupCard() {
                       type="submit"
                       loadingText="Submitting"
                       size="lg"
-                      bg={"blue.400"}
-                      color={"white"}
-                      _hover={{
-                        bg: "blue.500",
-                      }}
+                      colorScheme={"purple"}
                     >
                       Sign up
                     </Button>

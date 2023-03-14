@@ -11,16 +11,18 @@ import {
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import NavBar from "@/components/navbar";
+import { useContext, useEffect } from "react";
+import { AppContext } from "@/contexts/app";
 
 export default function Panel() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const appContext = useContext(AppContext);
+  
+  useEffect(() => {
+    appContext.onCloseLoading()
+  }, [])
 
   return (
     <Box>
-      <NavBar />
       <Flex
         alignItems="center"
         justifyContent="center"

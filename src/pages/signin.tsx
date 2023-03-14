@@ -17,10 +17,11 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { getAxiosInstance } from "@/services/api";
+import { AppContext } from "@/contexts/app";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
@@ -33,12 +34,21 @@ interface IUserAuth {
   type: number;
 }
 
-export default function SignIn() {
-  const [showPassword, setShowPassword] = useState(false);
+type IForm = {
+  email: string;
+  password: string;
+};
 
+export default function SignIn() {
+  const appContext = useContext(AppContext);
+  const [showPassword, setShowPassword] = useState(false);
   const api = getAxiosInstance();
   const { setIsAuth } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    appContext.onCloseLoading()
+  }, [])
 
   const SigninSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -46,6 +56,28 @@ export default function SignIn() {
       .min(8, "Password must contain at least 8 characters!")
       .required("Required"),
   });
+
+  const onSubmit = async (values: IForm) => {
+    try {
+      appContext.onOpenLoading()
+
+      const credentials = {
+        email: values.email,
+        password: values.password,
+      };
+      const { data } = await api.post("/api/auth/signin", credentials);
+      const userAuth: IUserAuth = data;
+
+      localStorage.setItem("accessToken", JSON.stringify(userAuth.token));
+      setIsAuth(true)
+      toast.success(`Welcome, ${userAuth.name}`);
+      router.push("private/panel");
+    } catch (error: any) {
+      const errorMessage = error.response.data;
+      toast.error(errorMessage);
+      appContext.onCloseLoading()
+    }
+  }
 
   return (
     <Flex
@@ -61,25 +93,7 @@ export default function SignIn() {
           rememberMe: false,
         }}
         validationSchema={SigninSchema}
-        onSubmit={async (values) => {
-          const credentials = {
-            email: values.email,
-            password: values.password,
-          };
-          try {
-            const { data } = await api.post("/api/auth/signin", credentials);
-            const userAuth: IUserAuth = data;
-
-            localStorage.setItem("accessToken", JSON.stringify(userAuth.token));
-            setIsAuth(true)
-            toast.success(`Welcome, ${userAuth.name}`);
-            router.push("private/panel");
-
-          } catch (error: any) {
-            const errorMessage = error.response.data;
-            toast.error(errorMessage);
-          }
-        }}
+        onSubmit={onSubmit}
       >
         {({ handleSubmit, errors, touched }) => (
           <Form onSubmit={handleSubmit}>
@@ -144,11 +158,7 @@ export default function SignIn() {
                       </Link>
                     </Stack>
                     <Button
-                      bg={"blue.400"}
-                      color={"white"}
-                      _hover={{
-                        bg: "blue.500",
-                      }}
+                      colorScheme={"purple"}
                       type={"submit"}
                     >
                       Login
@@ -156,7 +166,7 @@ export default function SignIn() {
                     <Stack>
                       <Text align={"center"}>
                         Don't have an account?{" "}
-                        <Link as={NextLink} href="./signup" color={"blue.400"}>
+                        <Link as={NextLink} href="./signup" colorScheme={"purple"}>
                           Sign Up
                         </Link>
                       </Text>
