@@ -1,4 +1,4 @@
-import { IUser } from "@/utils/types";
+import { IUser } from "@/types/api/User";
 import axios from "axios";
 
 export const getAxiosInstance = (user?: IUser) => {

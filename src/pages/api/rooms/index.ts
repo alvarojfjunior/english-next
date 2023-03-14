@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Dossie, Room } from "../../../services/database";
+import { Room } from "../../../services/database";
 import { authenticate } from "@/utils/apiAuth";
-import { IAuth } from "@/utils/types";
-import { JwtPayload } from "jsonwebtoken";
 import { createDossie } from "@/utils/createDossie";
 
 export default async function handler(

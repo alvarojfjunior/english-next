@@ -8,7 +8,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log(req)
     if (req.method === "POST") {
       const body = JSON.parse(JSON.stringify(req.body));
 

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User } from "../../../services/database";
+import { User } from "@/services/database";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createDossie } from "@/utils/createDossie";
@@ -20,7 +20,7 @@ export default async function handler(
 
       const user = await User.findOne({ email }).lean();
 
-      if (!user) return res.status(400).send("Invalid Credentials");
+      if (!user) return res.status(401).send("Invalid Credentials");
 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
@@ -47,7 +47,7 @@ export default async function handler(
         return res.status(200).json(user);
 
       }
-      return res.status(400).send("Invalid Credentials");
+      return res.status(401).send("Invalid Credentials");
     }
 
     return res.status(404);
