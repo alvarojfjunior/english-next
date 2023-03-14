@@ -9,15 +9,27 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "@/contexts/app";
+import { getImageURLByPhrase } from "@/services/image";
 
 export default function Panel() {
   const appContext = useContext(AppContext);
-  
+  const [images, setImages] = useState<string[]>([])
+
   useEffect(() => {
+    getImages()
     appContext.onCloseLoading()
   }, [])
+
+  const getImages = async () => {
+    const imagess = []
+    imagess.push(await getImageURLByPhrase('english'))
+    imagess.push(await getImageURLByPhrase('english'))
+    imagess.push(await getImageURLByPhrase('english'))
+    imagess.push(await getImageURLByPhrase('1531513513'))
+    setImages(imagess)
+  }
 
   return (
     <Box>
@@ -29,7 +41,7 @@ export default function Panel() {
         height="100vh"
       >
         {Array.from({ length: 4 }).map((_, index) => (
-          <Center key={index}  py={6}>
+          <Center key={index} py={6}>
             <Box
               maxW={"270px"}
               w={"full"}
@@ -41,9 +53,7 @@ export default function Panel() {
               <Image
                 h={"120px"}
                 w={"full"}
-                src={
-                  "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                }
+                src={images[index]}
                 objectFit={"cover"}
               />
 
