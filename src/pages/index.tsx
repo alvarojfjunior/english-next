@@ -5,11 +5,9 @@ import {
   Stack,
   Text,
   Button,
-  Icon,
-  IconProps,
   Image,
 } from '@chakra-ui/react';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 export default function CallToActionWithIllustration() {
   const router = useRouter();
@@ -30,7 +28,9 @@ export default function CallToActionWithIllustration() {
           </Text>
         </Heading>
         <Text color={'gray.500'} maxW={'3xl'}>
-          Você está cansado de se sentir constrangido com suas habilidades de fala em inglês? Você se encontra lutando para se expressar em inglês, mesmo que tenha estudado a língua por anos? Com nosso aplicativo, você finalmente pode superar seus medos e começar a falar inglês com confiança!
+          Você está cansado de se sentir constrangido com suas habilidades de fala em inglês?
+          Você se encontra lutando para se expressar em inglês, mesmo que tenha estudado a língua por anos?
+          Com nosso aplicativo, você finalmente pode superar seus medos e começar a falar inglês com confiança!
         </Text>
         <Stack spacing={6} direction={'row'}>
           <Button

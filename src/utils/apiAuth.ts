@@ -1,8 +1,6 @@
 import type { NextApiRequest } from "next";
 import jwt from "jsonwebtoken";
-import { IUser } from "./types";
-
-
+import { IUser } from "@/types/api/User";
 
 export const authenticate = (req: NextApiRequest): IUser | undefined => {
   const token = req.headers["authorization"]?.replace("Bearer ", "");
