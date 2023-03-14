@@ -22,9 +22,8 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { getAxiosInstance } from "@/services/api";
 import { AppContext } from "@/contexts/app";
-import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/auth";
+import { useToast } from '@chakra-ui/react'
 
 interface IUserAuth {
   email: string;
@@ -40,10 +39,11 @@ type IForm = {
 };
 
 export default function SignIn() {
+  const toast = useToast()
+
   const appContext = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
   const api = getAxiosInstance();
-  const { setIsAuth } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -69,12 +69,25 @@ export default function SignIn() {
       const userAuth: IUserAuth = data;
 
       localStorage.setItem("accessToken", JSON.stringify(userAuth.token));
-      setIsAuth(true)
-      toast.success(`Welcome, ${userAuth.name}`);
-      router.push("private/panel");
+      toast({
+        title: 'Sucesso',
+        description: "Seja bem vindo!",
+        status: 'success',
+        position: 'top-right',
+        duration: 9000,
+        isClosable: true,
+      });
+      router.push("private");
     } catch (error: any) {
       const errorMessage = error.response.data;
-      toast.error(errorMessage);
+      toast({
+        title: 'Houve um erro',
+        description: errorMessage,
+        status: 'error',
+        position: 'top-right',
+        duration: 9000,
+        isClosable: true,
+      });
       appContext.onCloseLoading()
     }
   }

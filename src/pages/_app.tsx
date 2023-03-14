@@ -1,7 +1,6 @@
 // pages/_app.js
 import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { ToastContainer } from "react-toastify";
 import NextNProgress from "nextjs-progressbar";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AuthProvider } from "@/contexts/auth";
@@ -15,7 +14,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NextNProgress />
       <AppProvider>
         <AuthProvider>
-          <ToastContainer />
           <NavBar />
           <Component {...pageProps} />
           <Footer />

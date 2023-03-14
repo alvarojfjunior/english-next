@@ -14,6 +14,7 @@ import {
   Text,
   useColorModeValue,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -22,7 +23,6 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import { getAxiosInstance } from "@/services/api";
-import { toast } from "react-toastify";
 import { AppContext } from "@/contexts/app";
 
 
@@ -34,6 +34,7 @@ interface IForm {
 }
 
 export default function SignupCard() {
+  const toast = useToast()
   const appContext = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -70,12 +71,26 @@ export default function SignupCard() {
       }
       await api.post('api/auth/signup', data);
 
-      toast.success('Account created with success');
+      toast({
+        title: 'Conta criada com sucesso!',
+        description: "Faça o login e começe praticar!",
+        status: 'success',
+        position: 'top-right',
+        duration: 9000,
+        isClosable: true,
+      });
       router.push('/signin')
 
     } catch (error: any) {
       const errorMessage = error.response.data;
-      toast.error(errorMessage);
+      toast({
+        title: 'Houve um erro',
+        description: errorMessage,
+        status: 'error',
+        position: 'top-right',
+        duration: 9000,
+        isClosable: true,
+      });
       appContext.onCloseLoading()
     }
   }

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -17,31 +17,31 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/auth";
+import { AuthContext } from "@/contexts/auth";
 
 
 export default function Nav() {
+  const { isAuth } = useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuth, setIsAuth } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsAuth(false);
+    router.push('/')
   };
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} py={{ base: 30, md: 2, lg: 2 }}>
+      <Box bg={useColorModeValue('purple.50', 'purple.900')} px={4} py={{ base: 30, md: 2, lg: 2 }}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Logo cursor={"pointer"} />
+          <Logo cursor={"pointer"} onClick={()=> isAuth ? router.push('private') : router.push('/') } />
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={{ base: 0, md: 5, lg: 5 }}>
               <Menu>
                 {!isAuth ? (
                   <Stack direction={{ base: 'column', md: 'row', lg: 'row' }} spacing={{ base: 0, md: 2, lg: 2 }}>
-                    <Button
+                    {router.pathname.indexOf('signup') <= -1 && <Button
                       variant={"solid"}
                       colorScheme={"purple"}
                       size={"md"}
@@ -49,8 +49,8 @@ export default function Nav() {
                       onClick={() => router.push("/signup")}
                     >
                       Criar conta
-                    </Button>
-                    <Button
+                    </Button>}
+                    {router.pathname.indexOf('signin') <= -1 && <Button
                       variant={"link"}
                       colorScheme={"purple"}
                       size={"md"}
@@ -58,8 +58,9 @@ export default function Nav() {
                       onClick={() => router.push("/signin")}
                     >
                       Entrar
-                    </Button>
+                    </Button>}
                   </Stack>
+
                 ) : (
                   <Stack direction={'row'} spacing={7}>
                     <MenuButton
@@ -87,6 +88,7 @@ export default function Nav() {
                       </Center>
                       <br />
                       <MenuDivider />
+                      <MenuItem >Meus dados</MenuItem>
                       <MenuItem onClick={handleLogout} >Sair</MenuItem>
                     </MenuList>
                   </Stack>

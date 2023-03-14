@@ -9,7 +9,6 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-<<<<<<< HEAD
 import { useContext, useEffect } from "react";
 import { AppContext } from "@/contexts/app";
 
@@ -19,12 +18,6 @@ export default function Panel() {
   useEffect(() => {
     appContext.onCloseLoading()
   }, [])
-=======
-import NavBar from "@/components/navbar";
-
-export default function Panel() {
-  
->>>>>>> 451bc37bd83f17688c165c83a3a1d1e6a6c4ac97
 
   return (
     <Box>

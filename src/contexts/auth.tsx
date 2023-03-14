@@ -2,10 +2,7 @@ import { useRouter } from "next/router";
 import {
   createContext,
   useEffect,
-  useState,
-  useContext,
-  Dispatch,
-  SetStateAction,
+  useState
 } from "react";
 
 interface AuthContextProps {
@@ -14,35 +11,41 @@ interface AuthContextProps {
 
 interface IAuthContextData {
   isAuth: boolean;
-  setIsAuth: Dispatch<SetStateAction<boolean>>;
-  verifyAuth(): boolean;
 }
 
-const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
+export const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(false);
   const router = useRouter();
+  const [isAuth, setIsAuth] = useState(false)
 
   useEffect(() => {
-    verifyAuth()
-  }, [isAuth]);
+    let auth = false
+    if (typeof window !== 'undefined') {
+      const accessToken = Boolean(localStorage.getItem('accessToken'))
+      if (!accessToken)
+        auth = false
+      else
+        auth = true
+    }
 
-  const verifyAuth = () => {
-    const accessToken = Boolean(localStorage.getItem('accessToken'))
-    !accessToken && router.push('/');
+    const isAuthRoute = router.pathname.indexOf('private') > -1
 
-    return accessToken;
-  };
+    if (!auth && isAuthRoute) {
+      router.push('signin')
+    } else if (auth && !isAuthRoute) {
+      router.push('private')
+    }
+
+
+    setIsAuth(auth)
+
+  }, [router]);
+
+
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth, verifyAuth }}>
-      { children }
+    <AuthContext.Provider value={{ isAuth }}>
+      {children}
     </AuthContext.Provider>
   );
 };
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  return context;
-}
