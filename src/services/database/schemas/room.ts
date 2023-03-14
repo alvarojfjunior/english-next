@@ -24,6 +24,10 @@ try {
         type: String,
         required: true,
       },
+      level: {
+        type: String,
+        required: true,
+      },
       closedAt: {
         type: Date,
         required: false,
