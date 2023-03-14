@@ -112,7 +112,7 @@ export default function SignIn() {
           <Form onSubmit={handleSubmit}>
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
               <Stack align={"center"}>
-                <Heading fontSize={"4xl"}>Login to your account</Heading>
+                <Heading fontSize={"4xl"}>Entre na sua conta</Heading>
                 <Text fontSize={"lg"} color={"gray.600"}></Text>
               </Stack>
 
@@ -127,7 +127,7 @@ export default function SignIn() {
                     id="email"
                     isInvalid={!!errors.email && touched.email}
                   >
-                    <FormLabel>Email address</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <Field as={Input} name="email" />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                   </FormControl>
@@ -136,7 +136,7 @@ export default function SignIn() {
                     id="password"
                     isInvalid={!!errors.password && touched.password}
                   >
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Senha</FormLabel>
                     <InputGroup>
                       <Field
                         as={Input}
@@ -164,23 +164,23 @@ export default function SignIn() {
                       justify={"space-between"}
                     >
                       <FormControl>
-                        <Checkbox name={"rememberMe"}>Remember me</Checkbox>
+                        <Checkbox name={"rememberMe"}>Mantenha-me conectado</Checkbox>
                       </FormControl>
                       <Link as={NextLink} href={"/forgotpassword"}>
-                        Forgot password?
+                      Esqueceu sua senha?
                       </Link>
                     </Stack>
                     <Button
                       colorScheme={"purple"}
                       type={"submit"}
                     >
-                      Login
+                      Entrar
                     </Button>
                     <Stack>
                       <Text align={"center"}>
-                        Don't have an account?{" "}
+                        Não tem uma conta?{" "}
                         <Link as={NextLink} href="./signup" colorScheme={"purple"}>
-                          Sign Up
+                          Cadastre-se
                         </Link>
                       </Text>
                     </Stack>

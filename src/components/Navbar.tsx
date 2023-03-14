@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   Avatar,
-  Link,
   Button,
   Menu,
   MenuButton,
@@ -20,7 +19,7 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/auth";
 
 
-export default function Nav() {
+export default function Navbar() {
   const { isAuth } = useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
@@ -32,7 +31,7 @@ export default function Nav() {
 
   return (
     <>
-      <Box bg={useColorModeValue('purple.50', 'purple.900')} px={4} py={{ base: 30, md: 2, lg: 2 }}>
+      <Box bg={useColorModeValue('purple.300', 'purple.900')} px={4} py={{ base: 30, md: 2, lg: 2 }}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Logo cursor={"pointer"} onClick={()=> isAuth ? router.push('private') : router.push('/') } />
 

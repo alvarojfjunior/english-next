@@ -25,7 +25,7 @@ export default function CallToActionWithIllustration() {
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
           lineHeight={'110%'}>
           Pratica de conversação{' '}
-          <Text as={'span'} color={'purple.400'}>
+          <Text as={'span'} color={'purple.300'}>
             agora gratuitamente
           </Text>
         </Heading>
@@ -38,12 +38,12 @@ export default function CallToActionWithIllustration() {
             px={6}
             colorScheme={'purple'}
             bg={'purple.400'}
-            _hover={{ bg: 'purple.500' }}
+            _hover={{ bg: 'purple.300' }}
             onClick={() => router.push('signup')}>
             Começar agora
           </Button>
           <Button rounded={'full'} px={6}>
-            Learn more
+            Saiba mais
           </Button>
         </Stack>
         <Flex w={'full'}>

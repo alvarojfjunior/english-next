@@ -117,7 +117,7 @@ export default function SignupCard() {
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
               <Stack align={"center"}>
                 <Heading fontSize={"4xl"} textAlign={"center"}>
-                  Sign up
+                  Cadastrar
                 </Heading>
                 <Text fontSize={"lg"} color={"purple.700"}>
                   to enjoy all of our cool features ✌️
@@ -137,7 +137,7 @@ export default function SignupCard() {
                         isRequired
                         isInvalid={!!errors.firstName && touched.firstName}
                       >
-                        <FormLabel>First Name</FormLabel>
+                        <FormLabel>Nome</FormLabel>
                         <Field as={Input} type="text" name="firstName" />
                         <FormErrorMessage>{errors.firstName}</FormErrorMessage>
                       </FormControl>
@@ -148,7 +148,7 @@ export default function SignupCard() {
                         isRequired
                         isInvalid={!!errors.lastName && touched.lastName}
                       >
-                        <FormLabel>Last Name</FormLabel>
+                        <FormLabel>Sobrenome</FormLabel>
                         <Field as={Input} type="text" name="lastName" />
                         <FormErrorMessage>{errors.lastName}</FormErrorMessage>
                       </FormControl>
@@ -159,7 +159,7 @@ export default function SignupCard() {
                     isRequired
                     isInvalid={!!errors.email && touched.email}
                   >
-                    <FormLabel>Email address</FormLabel>
+                    <FormLabel>Digite seu email</FormLabel>
                     <Field as={Input} type="email" name="email" />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                   </FormControl>
@@ -168,7 +168,7 @@ export default function SignupCard() {
                     isRequired
                     isInvalid={!!errors.password && touched.password}
                   >
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Senha</FormLabel>
                     <InputGroup>
                       <Field
                         as={Input}
@@ -195,14 +195,14 @@ export default function SignupCard() {
                       size="lg"
                       colorScheme={"purple"}
                     >
-                      Sign up
+                      Cadastrar
                     </Button>
                   </Stack>
                   <Stack pt={6}>
                     <Text align={"center"}>
-                      Already a user?{" "}
+                    Já é cadastrado?{" "}
                       <Link as={NextLink} href="./signin" color={"blue.400"}>
-                        Login
+                      Entrar
                       </Link>
                     </Text>
                   </Stack>
