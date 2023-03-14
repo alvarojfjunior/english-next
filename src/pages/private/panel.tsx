@@ -2,15 +2,14 @@ import {
   Heading,
   Box,
   Center,
-  IconButton,
   Image,
   Flex,
   Text,
   Stack,
   Button,
-  useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
+<<<<<<< HEAD
 import { useContext, useEffect } from "react";
 import { AppContext } from "@/contexts/app";
 
@@ -20,6 +19,12 @@ export default function Panel() {
   useEffect(() => {
     appContext.onCloseLoading()
   }, [])
+=======
+import NavBar from "@/components/navbar";
+
+export default function Panel() {
+  
+>>>>>>> 451bc37bd83f17688c165c83a3a1d1e6a6c4ac97
 
   return (
     <Box>
@@ -31,7 +36,7 @@ export default function Panel() {
         height="100vh"
       >
         {Array.from({ length: 4 }).map((_, index) => (
-          <Center key={index} width={"100%"} height={"100%"} py={6}>
+          <Center key={index}  py={6}>
             <Box
               maxW={"270px"}
               w={"full"}

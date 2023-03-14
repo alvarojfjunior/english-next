@@ -153,7 +153,7 @@ export default function SignIn() {
                       <FormControl>
                         <Checkbox name={"rememberMe"}>Remember me</Checkbox>
                       </FormControl>
-                      <Link as={NextLink} href={"#"}>
+                      <Link as={NextLink} href={"/forgotpassword"}>
                         Forgot password?
                       </Link>
                     </Stack>
